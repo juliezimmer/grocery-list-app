@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- the three meta tags that follow must be listed before anything else in the head.  Everything else should follow these tags. -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <!-- Sourcing in the css stylesheet for Bootstrap --> 
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <title>Grocery List App</title>
+</head>
+
+<body>
+ <!-- Helpful links for this section: 
+  glyphicons:  https://getbootstrap.com/docs/3.3/components/  
+  Navbar code taken directly from the page at the same link about half way down the page under NavBar: Brand image. THe first line of code on the page is navbar-default insstead of navbar-inverse as it is in this code.  There is no image file used, but glyphicon-apple is used instead.-->
+ <!-- NAVBAR STARTS HERE -->
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a href="#" class="navbar-brand">
+          <span class="glyphicon glyphicon-apple" style="color:
+          #5bdb48"></span>
+          Grocery List
+        </a>
+      </div>
+    </div>
+  </nav>
+
+<!-- this creates a floating container in the middle of the page 
+<div class="col-xs-12"> indicates how big the container should be.
+Docs for this can be found on this page: https://getbootstrap.com/docs/3.3/css/. Specific to this container,  -->
+  <div class="container">
+    <div class="col-xs-12">
+      <!-- class="list-group" allows the containment of multiple list items and make it look fancy. This class adds a rounded border. -->
+      <ul class="list-group">
+        <li class="list-group-item text-center clearfix">
+          <!-- class="pull-left" pulls the button glyphicon to the left or right in the container for the list-item -->
+          <button type="button" class="btn btn-sm btn-success pull-left">
+            <span class="glyphicon glyphicon-unchecked"></span>
+          </button>
+          <span style="font-weight:bold">Item 1</span>
+          <button type="class" class="btn btn-sm btn-default pull-right">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+        </li>
+        <li class="list-group-item text-center clearfix">
+          <button type="button" class="btn btn-sm btn-success pull-left">
+            <span class="glyphicon glyphicon-unchecked"></span>
+          </button>
+          <span style="font-weight:bold">Item 2</span>
+          <button type="button" class="btn btn-sm btn-default pull-right">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+        </li>
+        <li class="list-group-item text-center clearfix">
+          <button type="button" class="btn btn-sm btn-success pull-left">
+            <span class="glyphicon glyphicon-unchecked"></span>
+          </button>
+          <span style="font-weight:bold">Item 3</span>
+          <button type="button" class="btn btn-sm btn-default pull-right">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>  
+
+
+<!-- files needed for Bootstrap's JavaScript Plug-ins -->
+ <script src="vendors/jquery-3.2.1.min.js"></script> 
+ <script src="vendors/bootstrap.min.js"></script>
+ <script src="vendors/angular.min.js"></script>
+ <script src="js/app.js"></script>
+</body>
+</html>
