@@ -16,11 +16,12 @@
 <!-- Helpful links for this section: 
   glyphicons:  https://getbootstrap.com/docs/3.3/components/  
   Navbar code taken directly from the page at the same link about half way down the page under NavBar: Brand image. THe first line of code on the page is navbar-default insstead of navbar-inverse as it is in this code.  There is no image file used, but glyphicon-apple is used instead.-->
- <!-- NAVBAR STARTS HERE -->
+ <!-- NAVBAR STARTS HERE -->  
+ <!-- Remember: the navbar always stays the same on every page of the application-->
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a href="#" class="navbar-brand">
+        <a href="#!/" class="navbar-brand">
           <span class="glyphicon glyphicon-apple" style="color:
           #5bdb48"></span>
           <!-- because ng-controller="HomeController" was added to the body tag, Grocery List can be replaced with an expression that points to $scope.appTitle = "Grocery List";, which is in the HomeController in the app.js file.  -->
@@ -30,58 +31,17 @@
     </div>
   </nav>
 
-<!-- this next section or div with class="container" creates a floating container in the middle of the page 
-<div class="col-xs-12"> indicates how big the container should be.
-Docs for this can be found on this page: https://getbootstrap.com/docs/3.3/css/. Specific to this container,  -->
-
-<!-- by adding ng-controller="GroceryListItemsController" to the div below, the NG-REPEAT directive can be used to populate the grocery list by adding it to the <li> tag--> 
-  <div class="container" ng-controller="GroceryListItemsController">
-    <div class="col-xs-12">
-      <!-- class="list-group" allows the containment of multiple list items and make it look fancy. This class adds a rounded border. -->
-      <ul class="list-group">
-    <!-- ng-repeat says that for every item in the groceryListItems array (of objects, in app.js in the GroceryListItemsController), show: 
-      item.itemName
-    and put it in the <li>.
-    class="pull-left" pulls the button glyphicon to the left or right in the container for each list-item.
-    class="clearfix" is added because it fixes a bug in Bootstrap that affects the buttons that will be added later. -->
-        <li ng-repeat="item in groceryItems | orderBy: 'date'" class="list-group-item text-center clearfix">
-          <span style="font-weight:bold">{{item.itemName | uppercase}}</span>
-        </li>
-        <!--  <button type="button" class="btn btn-sm btn-success pull-left">
-            <span class="glyphicon glyphicon-unchecked"></span>
-          </button>
-          <span style="font-weight:bold">Item 1</span>
-          <button type="class" class="btn btn-sm btn-default pull-right">
-            <span class="glyphicon glyphicon-pencil"></span>
-          </button> -->
+  <div class="container">
+    <ng-view></ng-view>
+  </div>
+    
         
-       <!-- <li class="list-group-item text-center clearfix">
-          <button type="button" class="btn btn-sm btn-success pull-left">
-            <span class="glyphicon glyphicon-unchecked"></span>
-          </button>
-          <span style="font-weight:bold">Item 2</span>
-          <button type="button" class="btn btn-sm btn-default pull-right">
-            <span class="glyphicon glyphicon-pencil"></span>
-          </button>
-        </li>
-        <li class="list-group-item text-center clearfix">
-          <button type="button" class="btn btn-sm btn-success pull-left">
-            <span class="glyphicon glyphicon-unchecked"></span>
-          </button>
-          <span style="font-weight:bold">Item 3</span>
-          <button type="button" class="btn btn-sm btn-default pull-right">
-            <span class="glyphicon glyphicon-pencil"></span>
-          </button>
-        </li> -->
-      </ul>
-    </div>
-  </div>  
-
-
 <!-- files needed for Bootstrap's JavaScript Plug-ins -->
  <script src="vendors/jquery-3.2.1.min.js"></script> 
+ 
  <script src="vendors/bootstrap.min.js"></script>
  <script src="vendors/angular.min.js"></script>
+ <script src="vendors/angular-route.min.js"></script> <!-- ngRoute also has to be injected as a dependency in the angular.module in the app,js file.  Routing won't work if it is not injected into the module. -->
  <script src="js/app.js"></script>
 </body>
 </html>

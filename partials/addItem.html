@@ -1,0 +1,30 @@
+<!-- this would be considered a partial view or partial -->  
+<div class="col-xs-12">
+  <div class="jumbotron text-center">
+    <h1>Add Item Below</h1>
+  </div>
+  <!-- This form allows the addition of a grocery item -->
+  <form name="groceryForm">
+    <div class="form-group">
+      <!-- ng-model that points to a grocery item object with an item name. -->
+      <!-- ng-click="save()" calls the save() function when the Save button is clicked. -->
+      <input type="text" class="form-control" placeholder="Grocery Item" ng-model="groceryItem.itemName">
+    </div>
+  <!-- form/Save button when adding an item to the grocery list -->
+    <div class="form-group">
+      <a href="#!/" class="btn btn-success btn-lg btn-block">
+        <span class="glyphicon glyphicon-pushpin"></span>
+          Save
+      </a>
+    </div>
+  <!-- form/Cancel button for cancelling an item added to the grocery list -->
+    <div class="form-group">
+      <a href="#!/" class="btn btn-danger btn-lg btn-block">
+        <span class="glyphicon glyphicon-remove"></span>
+          Cancel
+      </a>
+    </div>
+  </form>
+</div>
+
+
