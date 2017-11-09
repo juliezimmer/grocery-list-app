@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="groceryListApp"> <!-- this is the same name that is defined in var app = angular.module('groceryListApp',[]); in app.js -->
 <head>
   <!-- the three meta tags that follow must be listed before anything else in the head.  Everything else should follow these tags. -->
   <meta charset="UTF-8">
@@ -11,8 +11,9 @@
   <title>Grocery List App</title>
 </head>
 
-<body>
- <!-- Helpful links for this section: 
+<body ng-controller="HomeController"> <!-- having placed the ng-controller="HomeController" in the body tag gives this access to the the $scope.appTitle in the HomeController in the app.js file -->
+
+<!-- Helpful links for this section: 
   glyphicons:  https://getbootstrap.com/docs/3.3/components/  
   Navbar code taken directly from the page at the same link about half way down the page under NavBar: Brand image. THe first line of code on the page is navbar-default insstead of navbar-inverse as it is in this code.  There is no image file used, but glyphicon-apple is used instead.-->
  <!-- NAVBAR STARTS HERE -->
@@ -22,30 +23,39 @@
         <a href="#" class="navbar-brand">
           <span class="glyphicon glyphicon-apple" style="color:
           #5bdb48"></span>
-          Grocery List
+          <!-- because ng-controller="HomeController" was added to the body tag, Grocery List can be replaced with an expression that points to $scope.appTitle = "Grocery List";, which is in the HomeController in the app.js file.  -->
+          {{appTitle}}
         </a>
       </div>
     </div>
   </nav>
 
-<!-- this creates a floating container in the middle of the page 
+<!-- this next section or div with class="container" creates a floating container in the middle of the page 
 <div class="col-xs-12"> indicates how big the container should be.
 Docs for this can be found on this page: https://getbootstrap.com/docs/3.3/css/. Specific to this container,  -->
-  <div class="container">
+
+<!-- by adding ng-controller="GroceryListItemsController" to the div below, the NG-REPEAT directive can be used to populate the grocery list by adding it to the <li> tag--> 
+  <div class="container" ng-controller="GroceryListItemsController">
     <div class="col-xs-12">
       <!-- class="list-group" allows the containment of multiple list items and make it look fancy. This class adds a rounded border. -->
       <ul class="list-group">
-        <li class="list-group-item text-center clearfix">
-          <!-- class="pull-left" pulls the button glyphicon to the left or right in the container for the list-item -->
-          <button type="button" class="btn btn-sm btn-success pull-left">
+    <!-- ng-repeat says that for every item in the groceryListItems array (of objects, in app.js in the GroceryListItemsController), show: 
+      item.itemName
+    and put it in the <li>.
+    class="pull-left" pulls the button glyphicon to the left or right in the container for each list-item.
+    class="clearfix" is added because it fixes a bug in Bootstrap that affects the buttons that will be added later. -->
+        <li ng-repeat="item in groceryItems | orderBy: 'date'" class="list-group-item text-center clearfix">
+          <span style="font-weight:bold">{{item.itemName | uppercase}}</span>
+        </li>
+        <!--  <button type="button" class="btn btn-sm btn-success pull-left">
             <span class="glyphicon glyphicon-unchecked"></span>
           </button>
           <span style="font-weight:bold">Item 1</span>
           <button type="class" class="btn btn-sm btn-default pull-right">
             <span class="glyphicon glyphicon-pencil"></span>
-          </button>
-        </li>
-        <li class="list-group-item text-center clearfix">
+          </button> -->
+        
+       <!-- <li class="list-group-item text-center clearfix">
           <button type="button" class="btn btn-sm btn-success pull-left">
             <span class="glyphicon glyphicon-unchecked"></span>
           </button>
@@ -62,7 +72,7 @@ Docs for this can be found on this page: https://getbootstrap.com/docs/3.3/css/.
           <button type="button" class="btn btn-sm btn-default pull-right">
             <span class="glyphicon glyphicon-pencil"></span>
           </button>
-        </li>
+        </li> -->
       </ul>
     </div>
   </div>  
