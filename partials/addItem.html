@@ -5,34 +5,37 @@
   </div>
   <!-- This form allows the addition of a grocery item -->
   <form name="groceryForm">
+
+<!-- ************ CREATING ALERTS WITH NG-SHOW ********* -->
+<!-- If the input does not pass validation, an alert pops up that        tells the user to enter a valid grocery item. The                   conditions in ng-show are defined as:  
+        groceryForm.$dirty ==> if the groceryForm is dirty (it has information entered)
+        && ==>  AND 
+        !groceryForm.$valid ==> the groceryForm is NOT valid - meaining it does not pass the validation test defined by ng-pattern (in the form-group div)
+      then the alert pops up or "shows" -->
+    <div class="alert alert-danger" role="alert" ng-show="groceryForm.$dirty && !groceryForm.$valid">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+      This is not a valid grocery item.  Please try again!  
+    </div>
+      
+<!--ng-model points the item entered in the input field.
+    ng-pattern is a directive that validates the input of the grocery item with a regular expression. 
+    The regular expression defines the parameters of whether the input is valid.
+    This reg exp says that any small or capital letters are valid input for the grocery item. Those are the only allowed characters in the input field for this item.  Anything else will evaluate as invalid. -->
     <div class="form-group">
-      <!-- Form validation variables -->
-        <p><b>Dirty:</b>{{groceryForm.$dirty}}</p>
-        <p><b>Pristine:</b>{{groceryForm.$pristine}}</p>
-        <p><b>Valid:</b>{{groceryForm.$valid}}</p>
-  
-  <!-- alert using ng-show.
-  If the iput does not pass validation, an alert pops up that tells the user to enter a valid grocery item. -->
-      <div class="alert alert-danger" role="alert" ng-show="groceryForm.$dirty && !groceryForm.$valid">
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <span class="sr-only">Error:</span>
-        This is not a valid grocery item. 
-         Please try again!  
-      </div>
-      <!-- ng-model points to a grocery item object with an item name. -->
-      <!-- ng-pattern is a directive that uses a regular expression to validate the input of a form field. The reg. exp. in quotes is what defines the parameters of acceptable input and whether the form is validated. -->
       <input type="text" ng-pattern="/^[a-zA-Z]*$/" class="form-control" placeholder="Grocery Item" ng-model="groceryItem.itemName" required>
     </div>
-  <!-- form/Save button when adding an item to the grocery list -->
-  <!-- ng-click="save()" calls the save() function when the Save button is clicked. -->
-  <!-- validation is added to the ng-click that says if the form validation evaluates to true, then call the save function when the save button is clicked. Otherwise, do nothing. --> 
+  
+  <!--ng-click="save()" calls the save() function when the Save         button is clicked. 
+      Validation is added to the ng-click that first checks the validity of the data entered as the groceryItem.  If it is valid, then the save() function is called when the Save button is clicked. Otherwise, do nothing. --> 
     <div class="form-group">
-      <a href="#!/" class="btn btn-success btn-lg btn-block" ng-click="groceryForm.$valid && save()">
+      <button type="button" class="btn btn-success btn-lg btn-block" ng-click="groceryForm.$valid && save()">
         <span class="glyphicon glyphicon-pushpin"></span>
         Save
-      </a>
+      </button>
     </div>
-  <!-- form/Cancel button for cancelling an item added to the grocery list -->
+  
+<!-- form/Cancel button for cancelling an item added to the grocery list -->
     <div class="form-group">
       <a href="#!/" class="btn btn-danger btn-lg btn-block">
         <span class="glyphicon glyphicon-remove"></span>
@@ -42,4 +45,9 @@
   </form>
 </div>
 
+<!-- Form validation variables 
+        <p><b>Dirty:</b>{{groceryForm.$dirty}}</p>
+        <p><b>Pristine:</b>{{groceryForm.$pristine}}</p>
+        <p><b>Valid:</b>{{groceryForm.$valid}}</p>
+      -->
 

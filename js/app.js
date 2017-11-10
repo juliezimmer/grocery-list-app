@@ -25,13 +25,12 @@ app.config(function($routeProvider){
       })
 });
 
-/* Creating a SERVICE called GroceryService for the controllers to use. 
-   The grocery items list will be passed into the GroceryListItemController that needs access to the list via route params. */
+/* ********** GROCERYSERVICE DEFINED *************** */ 
+/* The groceryItems list is passed into the               GroceryListItemController, that accessed the list via $routeParams. */
 app.service("GroceryService", function(){
       //create an empty object literal
       var groceryService = {};
 
-      /* Using object dot.notation: object.object property = the items in the array of objects from the GroceryListItemController. */
       groceryService.groceryItems =  [
         { id: 1, completed: true, itemName: 'milk', date: new Date ("October 1, 2017 11:13:00")}, 
         { id: 2, completed: true, itemName: 'cookies', date: new Date ("October 2, 2017 10:15:00")},
@@ -43,7 +42,7 @@ app.service("GroceryService", function(){
         { id: 8, completed: true, itemName: 'tortillas', date: new Date ("October 12, 2017 11:13:00")}
         ];
     
-    //Function to find an item to edit by it's ID.
+  // ****** Function to find an item to edit by it's ID.
     /* This function will perform a for each loop through all the items checking each id to see if it matches the id passed into the function. If it is a match, the object associated with the id is returned. */
      groceryService.findById = function (id) {
         for(var item in groceryService.groceryItems) {
@@ -66,10 +65,17 @@ app.service("GroceryService", function(){
                         return entry.id;
                       })
                       groceryService.newId = maxId.id + 1;
-                     return groceryService.newId;
+                    return groceryService.newId;
             }
         };
-  
+
+// markCompleted() function that was defined in the HomeController
+    groceryService.markCompleted = function(entry) {
+      /*this is the toggle switch logic functionality 
+        entry.completed is set equal to the INVERSE of entry.completed or the opposite state.  
+        If the box is unchecked and the markCompleted() function is called, the box will be checked after the function runs. */
+        entry.completed = !entry.completed;
+    };
   // removeItem function that was called in the controller
     groceryService.removeItem = function (entry) {
         /* using the indexOf function gets the index of whatever is passed in (entry). If it matches anything in the array, it will get the index of the matching item. */
@@ -97,22 +103,31 @@ app.service("GroceryService", function(){
       return groceryService;
   });
 
-// first Controller named "HomeController"
-// controls the body of the app in the  index.html file
-// the variable appTitle is set to "Grocery List", the name of the app. 
-// The GroceryService is passed into this controller for it to use.
+/* ************ HomeController Defined *************** */
+/* GroceryService has to be passed into the controller so it can be    accessed and used it. 
+   It is added as a dependency in the [] and as a parameter of function. 
+   GroceryService can now pass grocery list items to the GroceryListItemController. */
 app.controller("HomeController",["$scope","GroceryService", function ($scope, GroceryService) {
     $scope.groceryItems = GroceryService.groceryItems;
 
     // function to remove item from grocery list
     $scope.removeItem = function(entry) {
-      GroceryService.removeItem(entry); /* this function has to be defined in the GreoceryService */
+      /* This abstracts the data with the parameter into the           GroceryService.  It points/directs the removeItem()           function to the GroceryService to use the removeItem ()       function there with the same parameter passed in. */
+        GroceryService.removeItem(entry); /* this function has to be defined in the GreoceryService */
+    };
+
+    $scope.markCompleted = function(entry) {
+      /* This abstracts the data with the parameter into the           GroceryService.  It points/directs the function to the        GroceryService to use the markCompleted() function there      with the same parameter passed in. */
+        GroceryService.markCompleted(entry); /* this function has to be defined in the GreoceryService */
     }
+
   }]);
 
-// second controller - called "GroceryListItemController"
-// Handles all the interaction with the grocery list items
-/* In order for the GroceryService to pass the grocery list items into the GroceryListItemController, another parameter of "GroceryService" has to be added to the controller inside the [] AND within the function parameters. */ 
+/* *********** GroceryListItemController Defined ************* */ 
+/* Handles all the interaction with the grocery list items.
+   GroceryService has to be passed into the controller so it can be accessed and used it. 
+   It is added as a dependency in the [] and as a parameter of function.
+   GroceryService can now pass grocery list items to the GroceryListItemController.  */ 
 app.controller("GroceryListItemController", ["$scope", "$routeParams", "$location", "GroceryService", function($scope, $routeParams, $location, GroceryService) { 
       if (!$routeParams.id) { /* This says:If $routeParams.id is NOT null,then a new entry will be created. Put another way: if there is no id in the URL,then a new entry will be created. */
               $scope.groceryItem = {id: 0, completed: false, itemName: "", date: new Date()};
@@ -122,14 +137,20 @@ app.controller("GroceryListItemController", ["$scope", "$routeParams", "$locatio
           /* Sometimes $routeParams wants to pass the id as a string. To insure that it is passed as an integer, parseInt should be used with $routeParams.id. This guarantees that any string will be parsed and passed as an integer.  */
         }
     
-    // The save function on addItem.html
-    // The logic in the function will be linked to the GroceryService
-    $scope.save = function() {
-        /* This says to go to the GroceryService and use the save() function there with this particular parameter passed into the function, which is the $scope.groceryItem from line 112. */
-        GroceryService.save($scope.groceryItem);
+    
+      $scope.save = function() {
+        /* This abstracts the data with the parameter into the         GroceryService. It points/directs the save()                function to the GroceryService to use the save()            function there with the same parameter passed in. */
+        GroceryService.save($scope.groceryItem); /* this function has to be defined in the GreoceryService */
 
-        /* Now, the $location service is used to direct the flow of code back to the grocery list. */
+        /* the $location service is used to direct the flow of    code back to the grocery list. */
         $location.path("/");
-    };
-   
+      };
 }]);
+
+//defining custom directive
+app.directive("jzGroceryItem", function(){
+    return {
+        restrict: "E",
+        templateUrl: "partials/groceryItem.html"
+    }
+});

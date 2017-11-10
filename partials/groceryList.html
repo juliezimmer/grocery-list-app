@@ -14,16 +14,8 @@
   class="pull-left" pulls the button glyphicon to the left or right in the container for each list-item.
   class="clearfix" is added because it fixes a bug in Bootstrap that affects the buttons that will be added later. -->
     <li ng-repeat="item in groceryItems | orderBy: '-date'" class="list-group-item text-center clearfix">
-      <span style="font-weight:bold">{{item.itemName | uppercase}}</span>
-    
-    <!-- trash can (delete) button -->
-      <button type="button" class="btn btn-sm btn-danger pull-right" ng-click="removeItem(item)">
-        <span class="glyphicon glyphicon-trash"></span>
-      </button>
-      
-      <a href="#!/addItem/edit/{{item.id}}" class="btn btn-sm btn-default pull-right">
-        <span class="glyphicon glyphicon-pencil"></span>
-      </a>
+    <!-- this is the custom directive that is defined in the app.js file. -->
+      <jz-grocery-item></jz-grocery-item>
     </li>
   </ul>
 </div>

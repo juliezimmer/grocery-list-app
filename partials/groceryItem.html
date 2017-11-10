@@ -1,0 +1,34 @@
+<!-- ng-class in the <button> tag checks or unchecks the item box     based on the evaluation of the expression item.completed.
+  A ternery operator is used to evaluate the expression.
+  It says: If item.completed is true, make the glyphicon checked. Otherwise, glyphicon should be unchecked. 
+  ng-click defines the toggle functionality for the checkbox, which is the function markCompleted().
+  markCompleted() takes a parameter of "item" and is defined in the HomeController in the app.js file. -->
+
+<button type="button" class="btn btn-sm btn-success pull-left"
+  ng-click="markCompleted(item)">
+  <span class="glyphicon" ng-class="item.completed ? 'glyphicon-check' : 'glyphicon-unchecked'"></span>
+</button>
+
+<!-- ******* USING THE NG-CLASS DIRECTIVE ******* 
+  The ng-class directive dynamicallY adds a class based on how a    specific expression is evaluated.  
+  The class used by the directive must be in a single set of curly braces.
+  In the span tag below, ng-class uses the class "strike".
+  The expression to be evaluated followS the class. 
+  In this case, the expression is: item.completed. 
+  The expression evaluated based on the groceryService.groceryItems array in the app.js file.  
+  There is a completed property in each object and its value is set to true.  -->
+  
+<span ng-class="{strike:item.completed}" style="font-weight:bold">{{item.itemName | uppercase}}</span>
+
+<!-- trash can (delete) button -->
+  <button type="button" class="btn btn-sm btn-danger pull-right" ng-click="removeItem(item)">
+    <span class="glyphicon glyphicon-trash"></span>
+  </button>
+
+  <!-- edit/pencil icon/button -->  
+  <a href="#!/addItem/edit/{{item.id}}" class="btn btn-sm btn-default pull-right" style="margin-right:10px;">
+    <span class="glyphicon glyphicon-pencil"></span>
+  </a>
+
+
+ 
