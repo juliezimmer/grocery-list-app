@@ -8,13 +8,23 @@
     <span class="glyphicon glyphicon-plus"></span>
       Add Grocery Item</a>
   <ul class="list-group">
-  <!-- ng-repeat says that for every item in the groceryListItems array (of objects, in app.js in the GroceryListItemsController), show: 
+  <!-- ng-repeat says that for every item in the groceryListItems array (of objects, in app.js in the GroceryListItemController), show: 
     item.itemName
   and put it in the <li>.
   class="pull-left" pulls the button glyphicon to the left or right in the container for each list-item.
   class="clearfix" is added because it fixes a bug in Bootstrap that affects the buttons that will be added later. -->
-    <li ng-repeat="item in groceryItems | orderBy: 'date'" class="list-group-item text-center clearfix">
+    <li ng-repeat="item in groceryItems | orderBy: '-date'" class="list-group-item text-center clearfix">
       <span style="font-weight:bold">{{item.itemName | uppercase}}</span>
+    
+    <!-- trash can (delete) button -->
+      <button type="button" class="btn btn-sm btn-danger pull-right" ng-click="removeItem(item)">
+        <span class="glyphicon glyphicon-trash"></span>
+      </button>
+      
+      <a href="#!/addItem/edit/{{item.id}}" class="btn btn-sm btn-default pull-right">
+        <span class="glyphicon glyphicon-pencil"></span>
+      </a>
     </li>
   </ul>
 </div>
+<!-- the href in the <a> on line 18 is a link to another page that is the edit page for that particular item. In the expression in the path, the item.id is passed in {{item.id}}. This is a unique identifier for the item that is to be edited. --> 

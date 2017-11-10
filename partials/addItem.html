@@ -6,13 +6,28 @@
   <!-- This form allows the addition of a grocery item -->
   <form name="groceryForm">
     <div class="form-group">
-      <!-- ng-model that points to a grocery item object with an item name. -->
-      <input type="text" class="form-control" placeholder="Grocery Item" ng-model="groceryItem.itemName">
+      <!-- Form validation variables -->
+        <p><b>Dirty:</b>{{groceryForm.$dirty}}</p>
+        <p><b>Pristine:</b>{{groceryForm.$pristine}}</p>
+        <p><b>Valid:</b>{{groceryForm.$valid}}</p>
+  
+  <!-- alert using ng-show.
+  If the iput does not pass validation, an alert pops up that tells the user to enter a valid grocery item. -->
+      <div class="alert alert-danger" role="alert" ng-show="groceryForm.$dirty && !groceryForm.$valid">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        This is not a valid grocery item. 
+         Please try again!  
+      </div>
+      <!-- ng-model points to a grocery item object with an item name. -->
+      <!-- ng-pattern is a directive that uses a regular expression to validate the input of a form field. The reg. exp. in quotes is what defines the parameters of acceptable input and whether the form is validated. -->
+      <input type="text" ng-pattern="/^[a-zA-Z]*$/" class="form-control" placeholder="Grocery Item" ng-model="groceryItem.itemName" required>
     </div>
   <!-- form/Save button when adding an item to the grocery list -->
   <!-- ng-click="save()" calls the save() function when the Save button is clicked. -->
+  <!-- validation is added to the ng-click that says if the form validation evaluates to true, then call the save function when the save button is clicked. Otherwise, do nothing. --> 
     <div class="form-group">
-      <a href="#!/" class="btn btn-success btn-lg btn-block" ng-click="save()">
+      <a href="#!/" class="btn btn-success btn-lg btn-block" ng-click="groceryForm.$valid && save()">
         <span class="glyphicon glyphicon-pushpin"></span>
         Save
       </a>
