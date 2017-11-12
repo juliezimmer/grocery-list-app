@@ -4,7 +4,7 @@
 <div class="col-xs-12">
   <!-- This is a button, but an <a> tag is used instead of a <button> tag. As        long as the class="btn btn-primary..." is added to the <a> tag, it will       function like a button. 
        The anchor tag is neccessary so that the "button" is clickable and will link to another page or view in the project. -->
-  <a href="#!/addItem" stye="margin-bottom:10px;" class="btn btn-primary btn-lg btn-block">
+  <a href="#!/addItem" stye="margin-bottom: 10px;" class="btn btn-primary btn-lg btn-block">
     <span class="glyphicon glyphicon-plus"></span>
       Add Grocery Item</a>
   <ul class="list-group">
@@ -13,7 +13,7 @@
   and put it in the <li>.
   class="pull-left" pulls the button glyphicon to the left or right in the container for each list-item.
   class="clearfix" is added because it fixes a bug in Bootstrap that affects the buttons that will be added later. -->
-    <li ng-repeat="item in groceryItems | orderBy: '-date'" class="list-group-item text-center clearfix">
+    <li ng-repeat="item in groceryItems" class="list-group-item text-center clearfix">
     <!-- this is the custom directive that is defined in the app.js file. -->
       <jz-grocery-item></jz-grocery-item>
     </li>

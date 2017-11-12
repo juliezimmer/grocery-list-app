@@ -26,28 +26,41 @@ app.config(function($routeProvider){
 });
 
 /* ********** GROCERYSERVICE DEFINED *************** */ 
-/* The groceryItems list is passed into the               GroceryListItemController, that accessed the list via $routeParams. */
-app.service("GroceryService", function(){
+/*The groceryItems list is passed into the                            GroceryListItemController, that accessed the list via               $routeParams. 
+  The http service will be used so iti has to be added to the service as a parameter of the functon. This will allow AJAX calls to be made in the service. */
+app.service("GroceryService", function($http){
       //create an empty object literal
       var groceryService = {};
+      groceryService.groceryItems = [];
+  
+  /*http GET requests has two possible outcomes: 
+    success -  what happens when the call is successful
+    error - when the request is not complete or fails.
+    Each of the outcomes has a function that provides data about the response of the request. */
+      $http ({ 
+          method: 'GET',
+          url: 'data/server_data.json'
+        }).then(function successCallback(response) { 
+              groceryService.groceryItems = response.data;
+              console.log(response.data);
+              /*using JSON means that the data is returned as a       string. 
+                The data needs to be a new Date() object        instead and can be changed in this response. 
+                The code below converts the date string in the JSON string for each item to a new Date() object. 
+                The new Date() object has a constructor that takes a string as a parameter and it consructs a date object from the string. */
+                  for (var item in groceryService.groceryItems){
+                        groceryService.groceryItems[item].date = new Date (groceryService.groceryItems[item].date);
+                  }
+                  console.log(response.data);
 
-      groceryService.groceryItems =  [
-        { id: 1, completed: true, itemName: 'milk', date: new Date ("October 1, 2017 11:13:00")}, 
-        { id: 2, completed: true, itemName: 'cookies', date: new Date ("October 2, 2017 10:15:00")},
-        { id: 3, completed: true, itemName: 'ice cream', date: new Date ("October 2, 2017 11:13:00")},
-        { id: 4, completed: true, itemName: 'potatoes', date: new Date ("October 4, 2017 08:20:00")},
-        { id: 5, completed: true, itemName: 'cereal', date: new Date ("October 4, 2017 11:13:00")},
-        { id: 6, completed: true, itemName: 'bread', date: new Date ("October 8, 2017 11:13:00")},
-        { id: 7, completed: true, itemName: 'eggs', date: new Date ("October 9, 2017 11:13:00")},
-        { id: 8, completed: true, itemName: 'tortillas', date: new Date ("October 12, 2017 11:13:00")}
-        ];
+        },function errorCallback(response) {
+            alert("Things didn't go well."); 
+      });       
     
-  // ****** Function to find an item to edit by it's ID.
+  // ****** Function to find an item to edit by it's ID *************
     /* This function will perform a for each loop through all the items checking each id to see if it matches the id passed into the function. If it is a match, the object associated with the id is returned. */
      groceryService.findById = function (id) {
         for(var item in groceryService.groceryItems) {
           if(groceryService.groceryItems[item].id === id) {
-              console.log(groceryService.groceryItems[item]);
               return groceryService.groceryItems[item];
           }
         }
@@ -59,8 +72,10 @@ app.service("GroceryService", function(){
           if(groceryService.newId) {
               groceryService.newId++;
               return groceryService.newId;
-            } else { // it there is not a variable newId, create it
-               /* The function to create a newId is taken from the underscore.js library. The function looks at all the ids in the groceryService.groceryItems array. It finds the max id (the largest number). It then creates a newId by adding 1 to the highest id in the array, which becomes the newId. */
+            } else { /* if there is not a variable, newId, create               it using the code below. 
+                        The function to create a newId is taken from the underscore.js library. 
+                        The function looks at all the ids in the groceryService.groceryItems array. It finds the max id (the largest number). 
+                        It then creates a newId by adding 1 to the highest id in the array, which becomes the newId. */
                     var maxId = _.max(groceryService.groceryItems, function(entry) {
                         return entry.id;
                       })
@@ -119,7 +134,19 @@ app.controller("HomeController",["$scope","GroceryService", function ($scope, Gr
     $scope.markCompleted = function(entry) {
       /* This abstracts the data with the parameter into the           GroceryService.  It points/directs the function to the        GroceryService to use the markCompleted() function there      with the same parameter passed in. */
         GroceryService.markCompleted(entry); /* this function has to be defined in the GreoceryService */
-    }
+    };
+
+  /*$scope.$watch takes two parameters.
+    The first parameter (a function) is the data to be watched, which is the groceryItems being fetched via $http.get in the GroceryService. The array of groceryItems.
+    The second parameter is a listener function. It has one parameter: the groceryItems fetched in the $http.get request AFTER the date has changed. 
+    This function says: when the data has been changed, and make set it equal to the go to $scope.groceryItems and set it equal to the new groceryItems that just came it. 
+    Whenever the data changes, set it equal to $scope.groceryItems, which are the items displayed on the DOM. */
+     
+    $scope.$watch(function() {
+        return GroceryService.groceryItems;
+        }, function (groceryItems) {
+              $scope.groceryItems = groceryItems;
+        })
 
   }]);
 
@@ -154,3 +181,7 @@ app.directive("jzGroceryItem", function(){
         templateUrl: "partials/groceryItem.html"
     }
 });
+
+
+
+
